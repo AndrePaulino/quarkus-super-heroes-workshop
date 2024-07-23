@@ -1,4 +1,4 @@
-package io.quarkus.workshop.superheroes.ui;
+package io.apaulino.superheroes.ui;
 
 import io.quarkiverse.quinoa.testing.QuinoaTestProfiles;
 import io.quarkus.test.junit.QuarkusTest;

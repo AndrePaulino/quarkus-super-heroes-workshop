@@ -1,4 +1,4 @@
-package io.quarkus.workshop.superheroes.ui;
+package io.apaulino.superheroes.ui;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

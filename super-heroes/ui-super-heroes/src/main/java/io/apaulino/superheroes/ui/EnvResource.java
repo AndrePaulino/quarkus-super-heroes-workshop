@@ -1,4 +1,4 @@
-package io.quarkus.workshop.superheroes.ui;
+package io.apaulino.superheroes.ui;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

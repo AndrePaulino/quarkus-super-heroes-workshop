@@ -2,7 +2,7 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.quarkus.workshop.super-heroes</groupId>
+    <groupId>io.apaulino.super-heroes</groupId>
     <artifactId>super-parent-root</artifactId>
     <version>2.0</version>
     <packaging>pom</packaging>
@@ -57,14 +57,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <projectGroupId>io.quarkus.workshop.super-heroes</projectGroupId>
+                    <projectGroupId>io.apaulino.super-heroes</projectGroupId>
                     <projectArtifactId>temp-project</projectArtifactId>
                     <noCode>true</noCode>
                     <outputDirectory>${project.build.directory}</outputDirectory>
                     <!--  Pass in a new project so it doesn't try and update this pom and make a mess-->
                     <project>
                         <groupId>temp</groupId>
-                        <artifactId>org.apaulino</artifactId>
+                        <artifactId>io.apaulino</artifactId>
                         <version>2.0</version>
                         <packaging>pom</packaging>
                         <name>Throwaway project</name>
