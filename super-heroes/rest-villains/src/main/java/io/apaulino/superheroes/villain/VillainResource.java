@@ -16,8 +16,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @Path("/api/villains")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+@Consumes(MediaType.APPLICATION_JSON + ";charset=UTF-8")
 public class VillainResource {
 
     @Inject
@@ -41,7 +41,7 @@ public class VillainResource {
             logger.debug("No villain found with id: " + id);
             return RestResponse.noContent();
         }
-
+        logger.debug("Found villain " + villain);
         return RestResponse.ok(villain);
     }
 
