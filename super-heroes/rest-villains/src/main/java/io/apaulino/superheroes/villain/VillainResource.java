@@ -41,7 +41,7 @@ public class VillainResource {
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Villain.class, type = SchemaType.ARRAY)))
     public RestResponse<List<Villain>> getAllVillains() {
         List<Villain> villains = service.listAllVillains();
-        logger.debug("Total number of villains: " + villains.size());
+        logger.debugf("Total number of villains: %d", villains.size());
         return RestResponse.ok(villains);
     }
 
@@ -50,10 +50,10 @@ public class VillainResource {
     @Operation(summary = "Return specific villain for a given identifier")
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Villain.class)))
     @APIResponse(responseCode = "204", description = "The villain is not found for a given identifier")
-    public RestResponse<Villain> getVillain(@RestPath Long id) {
+    public RestResponse<Villain> getVillain(@RestPath final Long id) {
         Villain villain = service.findVillainById(id);
         if (villain == null) {
-            logger.debug("No villain found with id: " + id);
+            logger.debugf("No villain found with id: %d", id);
             return RestResponse.noContent();
         }
         logger.debug("Found villain " + villain);
@@ -66,7 +66,7 @@ public class VillainResource {
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Villain.class)))
     public RestResponse<Villain> getRandomVillain() {
         Villain villain = service.findRandomVillain();
-        logger.debug("Found random villain: " + villain);
+        logger.debugf("Found random villain: %s", villain);
         return RestResponse.ok(villain);
     }
 
@@ -76,7 +76,7 @@ public class VillainResource {
     public RestResponse<Villain> createVillain(@Valid Villain villain, @Context UriInfo uriInfo) {
         villain = service.saveVillain(villain);
         UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(villain.id));
-        logger.debug("New villain created with URI " + builder.build().toString());
+        logger.debugf("New villain created with URI %s", builder.build().toString());
         return RestResponse.created(builder.build());
     }
 
@@ -85,7 +85,7 @@ public class VillainResource {
     @APIResponse(responseCode = "200", description = "The updated villain", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Villain.class)))
     public RestResponse<Villain> updateVillain(@Valid Villain villain) {
         villain = service.updateVillain(villain);
-        logger.debug("Villain updated with new valued " + villain);
+        logger.debugf("Villain updated to: %s", villain);
         return RestResponse.ok(villain);
     }
 
@@ -95,7 +95,7 @@ public class VillainResource {
     @APIResponse(responseCode = "204")
     public RestResponse<Void> removeVillain(@RestPath Long id) {
         service.removeVillain(id);
-        logger.debug("Villain deleted with " + id);
+        logger.debugf("Villain %d deleted", id);
         return RestResponse.noContent();
     }
 
