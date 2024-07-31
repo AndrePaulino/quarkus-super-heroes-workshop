@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="rest-fights" />
         <module name="ui-super-heroes" />
         <module name="rest-heroes" />
         <module name="rest-villains" />
@@ -15,6 +16,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="rest-fights" options="-parameters" />
       <module name="rest-heroes" options="-parameters" />
       <module name="rest-villains" options="-parameters" />
       <module name="ui-super-heroes" options="-parameters" />
