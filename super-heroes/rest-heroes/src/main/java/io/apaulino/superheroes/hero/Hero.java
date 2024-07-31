@@ -7,12 +7,14 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @ToString
+@EqualsAndHashCode(callSuper = false)
 public class Hero extends PanacheEntity {
 
     @NotNull
