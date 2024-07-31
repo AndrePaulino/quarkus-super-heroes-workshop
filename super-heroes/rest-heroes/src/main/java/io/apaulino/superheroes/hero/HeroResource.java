@@ -69,7 +69,7 @@ public class HeroResource {
             .ifNull()
             .continueWith(() -> {
                 logger.debugf("No hero found with id: %d", id);
-                return RestResponse.notFound();
+                return RestResponse.noContent();
             });
     }
 
