@@ -210,7 +210,7 @@ class VillainResourceTest {
         given()
             .header(ACCEPT, APPLICATION_JSON)
             .when()
-            .get("/q/openapi")
+            .get("/openapi")
             .then()
             .statusCode(StatusCode.OK);
     }
