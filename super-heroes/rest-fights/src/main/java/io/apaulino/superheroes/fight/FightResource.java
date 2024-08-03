@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Path("/api/fights")
 @Tag(name = "Fights")
 @AllArgsConstructor
@@ -44,7 +45,7 @@ public class FightResource {
     }
 
     @GET
-    @Path("/randomFighters")
+    @Path("/randomfighters")
     @Operation(summary = "Return random fighters")
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Fighters.class, required = true)))
     public RestResponse<Fighters> getRandomFighters() {
