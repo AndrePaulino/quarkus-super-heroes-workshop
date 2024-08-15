@@ -1,10 +1,13 @@
 package io.apaulino.superheroes.fight;
 
+import io.apaulino.superheroes.fight.client.Hero;
 import io.apaulino.superheroes.fight.client.HeroProxy;
+import io.apaulino.superheroes.fight.client.Villain;
 import io.apaulino.superheroes.fight.client.VillainProxy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -42,8 +45,8 @@ public class FightService {
 
     Fighters findRandomFighters() {
         Fighters fighters = new Fighters();
-        fighters.hero = heroProxy.findRandomHero();
-        fighters.villain = villainProxy.findRandomVillain();
+        fighters.hero = findRandomHero();
+        fighters.villain = findRandomVillain();
         return fighters;
     }
 
@@ -64,6 +67,7 @@ public class FightService {
         if (heroPower > villainPower) return heroWon(fighters);
         return villainWon(fighters);
     }
+
 
     private Fight heroWon(Fighters fighters) {
         logger.info("Yes, Hero won! ️🦸🏽");
@@ -97,4 +101,34 @@ public class FightService {
         return fight;
     }
 
+    @Fallback(fallbackMethod = "fallbackRandomHero")
+    Hero findRandomHero() {
+        return heroProxy.findRandomHero();
+    }
+
+
+    @Fallback(fallbackMethod = "fallbackRandomVillain")
+    Villain findRandomVillain() {
+        return villainProxy.findRandomVillain();
+    }
+
+    Hero fallbackRandomHero() {
+        logger.warn("Falling back on hero");
+        return Hero.builder()
+            .name("Fallback Hero")
+            .level(1)
+            .picture("https://dummyimage.com/240x320/1e8fff/ffffff&text=Fallback+Hero")
+            .powers("Fallback hero powers")
+            .build();
+    }
+
+    Villain fallbackRandomVillain() {
+        logger.warn("Falling back on villain");
+        return Villain.builder()
+            .name("Fallback Villain")
+            .level(1)
+            .picture("https://dummyimage.com/240x320/b22222/ffffff&text=Fallback+Villain")
+            .powers("Fallback villain powers")
+            .build();
+    }
 }

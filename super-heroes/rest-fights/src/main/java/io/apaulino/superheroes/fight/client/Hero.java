@@ -1,8 +1,10 @@
 package io.apaulino.superheroes.fight.client;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+@Builder
 @Schema(description = "The hero fighting against the villain")
 public class Hero {
 

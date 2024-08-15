@@ -6,7 +6,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-import lombok.AllArgsConstructor;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -22,10 +23,8 @@ import java.util.Optional;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@SuppressWarnings("SpellCheckingInspection")
 @Path("/api/fights")
 @Tag(name = "Fights")
-@AllArgsConstructor
 @Produces(APPLICATION_JSON + ";charset=UTF-8")
 @Consumes(APPLICATION_JSON + ";charset=UTF-8")
 public class FightResource {
@@ -34,6 +33,9 @@ public class FightResource {
     Logger logger;
     @Inject
     FightService service;
+
+    @ConfigProperty(name = "process.milliseconds", defaultValue = "0")
+    Long tooManyMilliseconds;
 
     @GET
     @Operation(summary = "Return a list of all fights registered")
@@ -46,9 +48,11 @@ public class FightResource {
 
     @GET
     @Path("/randomfighters")
+    @Timeout(500)
     @Operation(summary = "Return random fighters")
     @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Fighters.class, required = true)))
     public RestResponse<Fighters> getRandomFighters() {
+        veryLongProcces();
         Fighters fighters = service.findRandomFighters();
         logger.debugf("Found random fighters: %s", fighters);
         return RestResponse.ok(fighters);
@@ -84,5 +88,13 @@ public class FightResource {
     @Operation(summary = "Hello world endpoint")
     public String hello() {
         return "Hello REST Fights";
+    }
+
+    private void veryLongProcces() {
+        try {
+            Thread.sleep(tooManyMilliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
