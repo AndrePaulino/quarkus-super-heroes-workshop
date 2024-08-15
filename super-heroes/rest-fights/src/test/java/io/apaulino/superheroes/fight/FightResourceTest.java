@@ -1,13 +1,11 @@
 package io.apaulino.superheroes.fight;
 
-import io.apaulino.superheroes.fight.client.Hero;
-import io.apaulino.superheroes.fight.client.Villain;
+import io.apaulino.superheroes.fight.client.*;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.common.mapper.TypeRef;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -23,6 +21,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.jboss.resteasy.reactive.RestResponse.StatusCode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -39,6 +38,10 @@ class FightResourceTest {
 
     private static final int NB_FIGHTS = 3;
     private static String fightId;
+
+    @InjectMock
+    @RestClient
+    HeroProxy heroProxy;
 
     @Test
     void shouldPingOpenAPI() {
@@ -157,9 +160,37 @@ class FightResourceTest {
             .body(is("Hello REST Fights"));
     }
 
+    @Test
+    void shouldGetRandomFighters() {
+        Fighters fighters = given()
+            .when()
+            .get("/api/fights/randomfighters")
+            .then()
+            .statusCode(StatusCode.OK)
+            .contentType(APPLICATION_JSON)
+            .extract()
+            .as(Fighters.class);
+
+        Hero hero = fighters.hero;
+        assertEquals(hero.level, DefaultTestHero.DEFAULT_HERO_LEVEL);
+        assertEquals(hero.name, DefaultTestHero.DEFAULT_HERO_NAME);
+        assertEquals(hero.picture, DefaultTestHero.DEFAULT_HERO_PICTURE);
+        assertEquals(hero.powers, DefaultTestHero.DEFAULT_HERO_POWERS);
+
+        Villain villain = fighters.villain;
+        assertEquals(villain.level, DefaultTestVillain.DEFAULT_VILLAIN_LEVEL);
+        assertEquals(villain.name, DefaultTestVillain.DEFAULT_VILLAIN_NAME);
+        assertEquals(villain.picture, DefaultTestVillain.DEFAULT_VILLAIN_PICTURE);
+        assertEquals(villain.powers, DefaultTestVillain.DEFAULT_VILLAIN_POWERS);
+    }
+
     private TypeRef<List<Fight>> getFightTypeRef() {
         return new TypeRef<>() {
         };
     }
 
+    @BeforeEach
+    void setUp() {
+        when(heroProxy.findRandomHero()).thenReturn(DefaultTestHero.INSTANCE);
+    }
 }
