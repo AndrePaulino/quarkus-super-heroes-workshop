@@ -1,8 +1,11 @@
 package io.apaulino.superheroes.fight;
 
+import io.apaulino.superheroes.fight.client.HeroProxy;
+import io.apaulino.superheroes.fight.client.VillainProxy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
 import java.time.Instant;
@@ -19,6 +22,10 @@ public class FightService {
 
     @Inject
     Logger logger;
+    @RestClient
+    HeroProxy heroProxy;
+    @RestClient
+    VillainProxy villainProxy;
 
     private final float HERO_POWER_MAX_MULTIPLIER = 3f;
     private final float VILLAIN_POWER_MAX_MULTIPLIER = 3f;
@@ -33,8 +40,11 @@ public class FightService {
         return Fight.findById(id);
     }
 
-    public Fighters findRandomFighters() {
-        return null;
+    Fighters findRandomFighters() {
+        Fighters fighters = new Fighters();
+        fighters.hero = heroProxy.findRandomHero();
+        fighters.villain = villainProxy.findRandomVillain();
+        return fighters;
     }
 
     @Transactional(REQUIRED)
