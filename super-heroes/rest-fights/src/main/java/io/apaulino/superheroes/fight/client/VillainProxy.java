@@ -6,7 +6,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-@Path("api/villains")
+@Path("/api/villains")
 @RegisterRestClient(configKey = "villain-host")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 public interface VillainProxy {

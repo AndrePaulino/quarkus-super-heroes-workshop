@@ -115,7 +115,7 @@ public class FightService {
     Hero fallbackRandomHero() {
         logger.warn("Falling back on hero");
         return Hero.builder()
-            .name("Fallback Hero")
+            .name("Fallback hero")
             .level(1)
             .picture("https://dummyimage.com/240x320/1e8fff/ffffff&text=Fallback+Hero")
             .powers("Fallback hero powers")
